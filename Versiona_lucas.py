@@ -29,7 +29,7 @@ ALTURA_PULO = 15
 GRAvida_jogadorDE = 1
 
 fonte = pygame.font.SysFont(None, 48)
-fundo = pygame.image.load('fundoo.jpg') # carrega imagem de fundo
+fundo = pygame.image.load('fundo2.jpg') # carrega imagem de fundo
 fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA)) # redimensiona imagem de fundo
 
 ninja_img = pygame.image.load('ninja.png').convert_alpha() # carrega imagem do ninja
@@ -38,8 +38,10 @@ ninja_img_small = pygame.transform.scale(ninja_img, (largura_ninja, altura_ninja
 bomba_img = pygame.image.load('bomba.png').convert_alpha() # carrega imagem da bomba
 bomba_img_small = pygame.transform.scale(bomba_img, (LARGURA_BOMBA, ALTURA_BOMBA)) # diminui o tamanho da imagem da bomba
 
-# ========== Inicia estruturas de dados
-# ========== Inicia estruturas de dados
+estrela_img = pygame.image.load('estrela.png').convert_alpha() # carrega imagem da estrela
+estrela_img_small = pygame.transform.scale(estrela_img, (LARGURA_BOMBA, ALTURA_BOMBA)) # diminui o tamanho da imagem da estrela
+
+# ========== Inicia estruturas de dados ==========
 class Bomba(pygame.sprite.Sprite):
     def __init__(self, img):
         # Construtor da classe mãe (Sprite).
@@ -62,6 +64,7 @@ class Bomba(pygame.sprite.Sprite):
             self.rect.y = random.randint(-100, -ALTURA_BOMBA)
             self.speedx = random.randint(-3, 3)
             self.speedy = random.randint(1, 11)
+
 
 class enviar (pygame.sprite.Sprite):
     def __init__(self,img):
@@ -103,7 +106,7 @@ class enviar (pygame.sprite.Sprite):
             self.pulando = True
 
 def renderizar_vida(vida): #função para renderizar a vida
-    return fonte.render("vida: " + chr(9829) * vida, True, (0, 0, 0))
+    return fonte.render("vida: " + chr(9829) * vida, True, (255, 255, 255))
 texto_vida = renderizar_vida(vida_jogador) #texto da vida
 texto_vida_rect = texto_vida.get_rect() #retangulo do texto da vida
 
