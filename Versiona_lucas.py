@@ -26,3 +26,10 @@ gravidade = 1
 # Lista para armazenar os peixes
 lista_peixes = []
 
+# Carregando e ajustando a imagem do peixe verde
+peixe_verde = pygame.transform.scale(pygame.image.load("greenFish.png"), (largura // 20, altura // 20))
+peixe_verde = pygame.transform.rotate(peixe_verde, 90)
+velocidade_peixe = 35
+gravidade_peixe = 1
+
+
