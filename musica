@@ -15,11 +15,11 @@ altura_ninja = 80
 ALTURA_BOMBA = 40
 LARGURA_BOMBA = 40
 fonte = pygame.font.SysFont(None, 48)
-fundo = pygame.image.load('91655.jpg')
+fundo = pygame.image.load('fundo2.jpg')
 fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA))
 ninja_img = pygame.image.load('ninja.png').convert_alpha()
 ninja_img_small = pygame.transform.scale(ninja_img, (largura_ninja, altura_ninja))
-bomba_img = pygame.image.load('bb.png').convert_alpha()
+bomba_img = pygame.image.load('bomba .png').convert_alpha()
 bomba_img_small = pygame.transform.scale(bomba_img, (largura_ninja, altura_ninja))
 #Toca a música no jogo
 som_fundo = pygame.mixer.Sound('musica.mp3') #som de fundo
