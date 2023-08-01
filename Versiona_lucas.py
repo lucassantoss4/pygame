@@ -2,6 +2,9 @@
 # ----- Importa e inicia pacotes
 
 import pygame
+import random
+
+from pygame.sprite import AbstractGroup
 
 pygame.init() # Inicia o pygame
 
@@ -29,33 +32,64 @@ bomba_img = pygame.image.load('bomba.png').convert_alpha() # carrega imagem da b
 bomba_img_small = pygame.transform.scale(bomba_img, (largura_ninja, altura_ninja)) # diminui o tamanho da imagem da bomba
 
 # ========== Inicia estruturas de dados
-game = True
-bomba_x = 200
-# y negativo significa que está acima do topo da janela. A bomba começa fora da janela
-bomba_y = - ALTURA_BOMBA
-bomba_velocidade_x = 3
-bomba_velocidade_y = 4
+# ========== Inicia estruturas de dados
+class Bomba(pygame.sprite.Sprite):
+    def __init__(self, img):
+        # Construtor da classe mãe (Sprite).
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = img #imagem da bomba   
+        self.rect = self.image.get_rect() #pega o retangulo da imagem
+        self.rect.x = random.randint(0, LARGURA - LARGURA_BOMBA) #posição x aleatoria
+        self.rect.y = random.randint(-ALTURA_BOMBA, -ALTURA_BOMBA) #posição y aleatoria
+        self.speedx = random.randint(-3, 3) #velocidade x aleatoria
+        self.speedy = random.randint(1, 11) #velocidade y aleatoria
+
+    def update(self):
+        #atualiza a posição da bomba
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        # se a bomba passar do final da tela, volta para cima e sorteia novas posições e velocidades
+        if self.rect.top > ALTURA or self.rect.left > LARGURA or self.rect.right < 0:
+            self.rect.x = random.randint(0, LARGURA - LARGURA_BOMBA)
+            self.rect.y = random.randint(-100, -ALTURA_BOMBA)
+            self.speedx = random.randint(-3, 3)
+            self.speedy = random.randint(1, 11)
+
+
+game = True  # Variável para o loop principal
+# Variável para o ajuste de velocidade
+clock = pygame.time.Clock()
+FPS = 60 
+
+# Criando um grupo de bombas
+bombas = pygame.sprite.Group()
+
+# Criando as bombas
+bomba1 = Bomba(bomba_img_small)
+bomba2 = Bomba(bomba_img_small)
 
 # ===== Loop principal =====
 while game:
+    clock.tick(FPS) # Ajusta a velocidade do jogo
+
     # ------- Trata eventos
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             game = False
 
     # ----- Atualiza estado do jogo
-    bomba_x += bomba_velocidade_x
-    bomba_y += bomba_velocidade_y
-
-    # Se a bomba passar do final da tela, volta para cima  
-    if bomba_y > ALTURA or bomba_x + LARGURA_BOMBA < 0 or bomba_x > LARGURA:
-        bomba_x = 200
-        bomba_y = - ALTURA_BOMBA
+    # Atualizando a posição da bomba
+    bomba1.update()
+    bomba2.update()
 
     # ----- Gera saídas
     janela.fill((255, 255, 255))  # Preenche com a cor branca
     janela.blit(fundo, (0, 0)) # coloca a imagem de fundo na tela
-    janela.blit(bomba_img_small, (bomba_x, bomba_y)) # coloca a bomba na tela
+
+    # Desenhando a bomba
+    janela.blit(bomba1.image, bomba1.rect)
+    janela.blit(bomba2.image, bomba2.rect)
     pygame.display.update() # Mostra o novo frame para o jogador
 
 # ===== Finalização =====
