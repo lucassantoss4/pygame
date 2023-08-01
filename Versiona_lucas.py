@@ -17,14 +17,16 @@ janela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption('Jogo ninja') #muda o nome da janela
 
 # ----- Inicia assets
-largura_ninja = 70
-altura_ninja = 80
+largura_ninja = 100
+altura_ninja = 90
 
-ALTURA_BOMBA = 40
-LARGURA_BOMBA = 40
+vida_jogador = 3
+
+ALTURA_BOMBA = 70
+LARGURA_BOMBA = 50
 
 ALTURA_PULO = 15
-GRAVIDADE = 1
+GRAvida_jogadorDE = 1
 
 fonte = pygame.font.SysFont(None, 48)
 fundo = pygame.image.load('fundoo.jpg') # carrega imagem de fundo
@@ -34,7 +36,7 @@ ninja_img = pygame.image.load('ninja.png').convert_alpha() # carrega imagem do n
 ninja_img_small = pygame.transform.scale(ninja_img, (largura_ninja, altura_ninja)) # diminui o tamanho da imagem do ninja
 
 bomba_img = pygame.image.load('bomba.png').convert_alpha() # carrega imagem da bomba
-bomba_img_small = pygame.transform.scale(bomba_img, (largura_ninja, altura_ninja)) # diminui o tamanho da imagem da bomba
+bomba_img_small = pygame.transform.scale(bomba_img, (LARGURA_BOMBA, ALTURA_BOMBA)) # diminui o tamanho da imagem da bomba
 
 # ========== Inicia estruturas de dados
 # ========== Inicia estruturas de dados
@@ -80,8 +82,8 @@ class enviar (pygame.sprite.Sprite):
         #Atualiza a posição 
         self.rect.x += self.speedx
 
-        # Aplicar gravidade
-        self.velocidade_y += GRAVIDADE
+        # Aplicar gravida_jogadorde
+        self.velocidade_y += GRAvida_jogadorDE
         self.rect.y += self.velocidade_y
 
         # Impedir que o personagem saia da tela no eixo vertical
@@ -100,6 +102,11 @@ class enviar (pygame.sprite.Sprite):
             self.velocidade_y = -ALTURA_PULO
             self.pulando = True
 
+def renderizar_vida(vida): #função para renderizar a vida
+    return fonte.render("vida: " + chr(9829) * vida, True, (0, 0, 0))
+texto_vida = renderizar_vida(vida_jogador) #texto da vida
+texto_vida_rect = texto_vida.get_rect() #retangulo do texto da vida
+
 game = True  # Variável para o loop principal
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
@@ -107,6 +114,7 @@ FPS = 60
 
 # grupos de bombas
 todas_sprites = pygame.sprite.Group()
+todas_bombas = pygame.sprite.Group()
 
 # criando personagem
 jogador = enviar(ninja_img_small)
@@ -115,6 +123,7 @@ todas_sprites.add(jogador)
 for i in range(5):
     bomba = Bomba(bomba_img_small)
     todas_sprites.add(bomba)
+    todas_bombas.add(bomba)
 
 # Criando um grupo de bombas
 bombas = pygame.sprite.Group()
@@ -155,13 +164,25 @@ while game:
     # Atualizando a posição da bomba
     todas_sprites.update()
 
+    # Verifica se houve colisão entre a bomba e o jogador
+    hits = pygame.sprite.spritecollide(jogador, todas_bombas, True)
+    if len(hits) > 0:
+        vida_jogador -= 1
+        if vida_jogador == 0:
+            game = False
+
+    # Atualiza o texto da vida do jogador
+    texto_vida = renderizar_vida(vida_jogador)
+
     # ----- Gera saídas
     janela.fill((255, 255, 255))  # Preenche com a cor branca
     janela.blit(fundo, (0, 0)) # coloca a imagem de fundo na tela
+    janela.blit(texto_vida, texto_vida_rect) #coloca o texto da vida na tela
+
 
     # Desenhando a bomba
     todas_sprites.draw(janela)
     pygame.display.update() # Mostra o novo frame para o jogador
 
 # ===== Finalização =====
-pygame.quit()  # Função do PyGame que finaliza os recursos utilizados      
+pygame.quit()  # Função do PyGame que finaliza os recursos utilizados 
