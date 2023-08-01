@@ -16,14 +16,14 @@ pescador_virado = pygame.transform.flip(pescador, True, False)
 tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("Jogo")
 
-# Definindo as velocidades e direções do pescador
+# Definindo as velocidades e direções do personagem
 velocidade_caminhada = 10
 velocidade_pulo = 20
 direcao = "direita"
 pulou = False
 gravidade = 1
 
-# Lista para armazenar os peixes
+# Lista para armazenar os moedas
 lista_das_moedas = []
 
 # Carregando e ajustando a imagem do peixe verde
