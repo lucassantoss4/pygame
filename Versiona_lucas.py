@@ -1,6 +1,7 @@
 # ===== Inicialização =====
 # ----- Importa e inicia pacotes
 
+from typing import Any
 import pygame
 import random
 
@@ -56,11 +57,38 @@ class Bomba(pygame.sprite.Sprite):
             self.speedx = random.randint(-3, 3)
             self.speedy = random.randint(1, 11)
 
+class enviar (pygame.sprite.Sprite):
+    def __init__(self,img):
+        # Construtor da classe mãe (Sprite).
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = img 
+        self.rect = self.image.get_rect()
+        self.rect.centerx = LARGURA / 2
+        self.rect.bottom = ALTURA - 10 
+        self.speedx = 0
+
+    def update(self):
+        #Atualiza a posição 
+        self.rect.x += self.speedx
+
+        #Mantem dentro da tela
+        if self.rect.right > LARGURA:
+            self.rect.right = LARGURA
+        if self.rect.left < 0:
+            self.rect.left = 0
 
 game = True  # Variável para o loop principal
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
 FPS = 60 
+
+# grupos de bombas
+todas_bombas = pygame.sprite.Group()
+# criando bombas e adicionando no grupo
+for i in range(5):
+    bomba = Bomba(bomba_img_small)
+    todas_bombas.add(bomba)
 
 # Criando um grupo de bombas
 bombas = pygame.sprite.Group()
@@ -80,16 +108,14 @@ while game:
 
     # ----- Atualiza estado do jogo
     # Atualizando a posição da bomba
-    bomba1.update()
-    bomba2.update()
+    todas_bombas.update()
 
     # ----- Gera saídas
     janela.fill((255, 255, 255))  # Preenche com a cor branca
     janela.blit(fundo, (0, 0)) # coloca a imagem de fundo na tela
 
     # Desenhando a bomba
-    janela.blit(bomba1.image, bomba1.rect)
-    janela.blit(bomba2.image, bomba2.rect)
+    todas_bombas.draw(janela)
     pygame.display.update() # Mostra o novo frame para o jogador
 
 # ===== Finalização =====
