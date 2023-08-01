@@ -7,7 +7,7 @@ pygame.init()
 # Definindo a largura e a altura da janela do jogo
 largura, altura = 1600, 900
 
-# Carregando as imagens do fundo e do pescador
+# Carregando as imagens do fundo 
 imagem_fundo = pygame.transform.scale(pygame.image.load("fundoo.jpg"), (largura, altura))
 pescador = pygame.transform.scale(pygame.image.load("Fisherman.png"), (largura // 20, altura // 11))
 pescador_virado = pygame.transform.flip(pescador, True, False)
@@ -26,7 +26,7 @@ gravidade = 1
 # Lista para armazenar os moedas
 lista_das_moedas = []
 
-# Carregando e ajustando a imagem do peixe verde
+# Carregando e ajustando a imagem 
 moeda = pygame.transform.scale(pygame.image.load("bomba(1)png"), (largura // 10, altura // 10))
 moeda = pygame.transform.rotate(moeda, 90)
 velocidade_moeda = 35
