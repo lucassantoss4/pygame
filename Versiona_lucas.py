@@ -22,6 +22,10 @@ altura_ninja = 80
 
 ALTURA_BOMBA = 40
 LARGURA_BOMBA = 40
+
+ALTURA_PULO = 15
+GRAVIDADE = 1
+
 fonte = pygame.font.SysFont(None, 48)
 fundo = pygame.image.load('fundoo.jpg') # carrega imagem de fundo
 fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA)) # redimensiona imagem de fundo
@@ -68,15 +72,33 @@ class enviar (pygame.sprite.Sprite):
         self.rect.bottom = ALTURA - 10 
         self.speedx = 0
 
+        # Variáveis de controle de salto
+        self.pulando = False
+        self.velocidade_y = 0
+
     def update(self):
         #Atualiza a posição 
         self.rect.x += self.speedx
+
+        # Aplicar gravidade
+        self.velocidade_y += GRAVIDADE
+        self.rect.y += self.velocidade_y
+
+        # Impedir que o personagem saia da tela no eixo vertical
+        if self.rect.bottom > ALTURA:
+            self.rect.bottom = ALTURA
+            self.pulando = False
 
         #Mantem dentro da tela
         if self.rect.right > LARGURA:
             self.rect.right = LARGURA
         if self.rect.left < 0:
             self.rect.left = 0
+
+    def pular(self):
+        if not self.pulando:
+            self.velocidade_y = -ALTURA_PULO
+            self.pulando = True
 
 game = True  # Variável para o loop principal
 # Variável para o ajuste de velocidade
@@ -125,6 +147,9 @@ while game:
                 jogador.speedx += 5
             if evento.key == pygame.K_RIGHT:
                 jogador.speedx -= 5
+
+            if evento.key == pygame.K_SPACE:
+                jogador.pular()  # Chama a função de pular do jogador
 
     # ----- Atualiza estado do jogo
     # Atualizando a posição da bomba
