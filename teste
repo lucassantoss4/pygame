@@ -1,8 +1,0 @@
-import pygame
-import random
-
-# Inicialização do Pygame
-pygame.init()
-
-# Definindo a largura e a altura da janela do jogo
-largura, altura = 1600, 900
