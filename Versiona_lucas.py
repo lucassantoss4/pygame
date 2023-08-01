@@ -24,12 +24,10 @@ pulou = False
 gravidade = 1
 
 # Lista para armazenar os peixes
-lista_peixes = []
+lista_das_moedas = []
 
 # Carregando e ajustando a imagem do peixe verde
-peixe_verde = pygame.transform.scale(pygame.image.load("greenFish.png"), (largura // 20, altura // 20))
-peixe_verde = pygame.transform.rotate(peixe_verde, 90)
-velocidade_peixe = 35
-gravidade_peixe = 1
-
-
+moeda = pygame.transform.scale(pygame.image.load("bomba(1)png"), (largura // 10, altura // 10))
+moeda = pygame.transform.rotate(moeda, 90)
+velocidade_moeda = 35
+gravidade_moeda = 1
