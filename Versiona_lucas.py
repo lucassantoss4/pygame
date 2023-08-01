@@ -84,11 +84,15 @@ clock = pygame.time.Clock()
 FPS = 60 
 
 # grupos de bombas
-todas_bombas = pygame.sprite.Group()
-# criando bombas e adicionando no grupo
+todas_sprites = pygame.sprite.Group()
+
+# criando personagem
+jogador = enviar(ninja_img_small)
+todas_sprites.add(jogador)
+
 for i in range(5):
     bomba = Bomba(bomba_img_small)
-    todas_bombas.add(bomba)
+    todas_sprites.add(bomba)
 
 # Criando um grupo de bombas
 bombas = pygame.sprite.Group()
@@ -105,17 +109,33 @@ while game:
     for evento in pygame.event.get():
         if evento.type == pygame.QUIT:
             game = False
+            
+        # Verifica se apertou alguma tecla.
+        if evento.type == pygame.KEYDOWN:
+            # Dependendo da tecla, altera a velocidade.
+            if evento.key == pygame.K_LEFT:
+                jogador.speedx -= 5
+            if evento.key == pygame.K_RIGHT:
+                jogador.speedx += 5
+        
+        # Verifica se soltou alguma tecla.
+        if evento.type == pygame.KEYUP:
+            # Dependendo da tecla, altera a velocidade.
+            if evento.key == pygame.K_LEFT:
+                jogador.speedx += 5
+            if evento.key == pygame.K_RIGHT:
+                jogador.speedx -= 5
 
     # ----- Atualiza estado do jogo
     # Atualizando a posição da bomba
-    todas_bombas.update()
+    todas_sprites.update()
 
     # ----- Gera saídas
     janela.fill((255, 255, 255))  # Preenche com a cor branca
     janela.blit(fundo, (0, 0)) # coloca a imagem de fundo na tela
 
     # Desenhando a bomba
-    todas_bombas.draw(janela)
+    todas_sprites.draw(janela)
     pygame.display.update() # Mostra o novo frame para o jogador
 
 # ===== Finalização =====
