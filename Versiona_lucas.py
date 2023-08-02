@@ -56,6 +56,30 @@ som_explosao = pygame.mixer.Sound('bomba_som.mp3')
 som_explosao.set_volume(0.5)
 
 # ========== Inicia estruturas de dados ==========
+class Estrela(pygame.sprite.Sprite):
+    def __init__(self, img):
+        # Construtor da classe mãe (Sprite).
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = img # imagem da estrela   
+        self.rect = self.image.get_rect() # pega o retângulo da imagem
+        self.rect.x = random.randint(0, LARGURA - LARGURA_BOMBA) # posição x aleatória
+        self.rect.y = random.randint(-ALTURA_BOMBA, -ALTURA_BOMBA) # posição y aleatória
+        self.speedx = random.randint(-3, 3) # velocidade x aleatória
+        self.speedy = random.randint(1, 11) # velocidade y aleatória
+
+    def update(self):
+        # atualiza a posição da estrela
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+        # se a estrela passar do final da tela, volta para cima e sorteia novas posições e velocidades
+        if self.rect.top > ALTURA or self.rect.left > LARGURA or self.rect.right < 0:
+            self.rect.x = random.randint(0, LARGURA - LARGURA_BOMBA)
+            self.rect.y = random.randint(-100, -ALTURA_BOMBA)
+            self.speedx = random.randint(-3, 3)
+            self.speedy = random.randint(1, 11)
+
+
 class Bomba(pygame.sprite.Sprite):
     def __init__(self, img):
         # Construtor da classe mãe (Sprite).
@@ -120,7 +144,6 @@ class enviar (pygame.sprite.Sprite):
             self.pulando = True #está pulando
 
 def tocar_som_explosao(): #função para tocar o som de explosão
-
     som_explosao.play() #toca o som de explosão
 
 def renderizar_vida(vida): #função para renderizar a vida
@@ -134,18 +157,23 @@ game = True  # Variável para o loop principal
 clock = pygame.time.Clock()
 FPS = 60 
 
-# grupos de bombas
+# grupos de bombas e estrelas
 todas_sprites = pygame.sprite.Group()
 todas_bombas = pygame.sprite.Group()
+todas_estrelas = pygame.sprite.Group()
 
 # criando personagem
 jogador = enviar(ninja_img_small)
 todas_sprites.add(jogador)
 
+# Adicionando bombas e estrelas ao grupo todas_sprites
 for i in range(5):
     bomba = Bomba(bomba_img_small)
+    estrela = Estrela(estrela_img_small)
     todas_sprites.add(bomba)
+    todas_sprites.add(estrela)
     todas_bombas.add(bomba)
+    todas_estrelas.add(estrela)
 
 # Criando um grupo de bombas
 bombas = pygame.sprite.Group()
@@ -201,9 +229,12 @@ while game:
     todas_sprites.update()
 
     # Verifica se houve colisão entre a bomba e o jogador
-    hits = pygame.sprite.spritecollide(jogador, todas_bombas, True)
+    hits_bomba = pygame.sprite.spritecollide(jogador, todas_bombas, True)
+    hits_estrela = pygame.sprite.spritecollide(jogador, todas_estrelas, True)
 
-    if len(hits) > 0:
+    # Verifica se houve colisão entre a bomba e o jogador
+
+    if len(hits_bomba) > 0:
         tocar_som_explosao()  # Remova o argumento desnecessário aqui
         vida_jogador -= 1
     if vida_jogador == 0:
