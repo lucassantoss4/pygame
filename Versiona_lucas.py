@@ -34,32 +34,32 @@ ALTURA_PULO = 15 #altura do pulo do ninja
 GRAvida_jogadorDE = 1 #gravidade do ninja
 
 fonte = pygame.font.SysFont(None, 48)
-fundo = pygame.image.load('fundo2.jpg') # carrega imagem de fundo
+fundo = pygame.image.load('util/img/fundo2.jpg') # carrega imagem de fundo
 fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA)) # redimensiona imagem de fundo
 
-ninja_img = pygame.image.load('ninja.png').convert_alpha() # carrega imagem do ninja
+ninja_img = pygame.image.load('util/img/ninja.png').convert_alpha() # carrega imagem do ninja
 ninja_img_small = pygame.transform.scale(ninja_img, (largura_ninja, altura_ninja)) # diminui o tamanho da imagem do ninja
 
-bomba_img = pygame.image.load('bomba.png').convert_alpha() # carrega imagem da bomba
+bomba_img = pygame.image.load('util/img/bomba.png').convert_alpha() # carrega imagem da bomba
 bomba_img_small = pygame.transform.scale(bomba_img, (LARGURA_BOMBA, ALTURA_BOMBA)) # diminui o tamanho da imagem da bomba
 
-estrela_img = pygame.image.load('estrela.png').convert_alpha() # carrega imagem da estrela
+estrela_img = pygame.image.load('util/img/estrela.png').convert_alpha() # carrega imagem da estrela
 estrela_img_small = pygame.transform.scale(estrela_img, (largura_estrela, altura_estrela)) # diminui o tamanho da imagem da estrela
 
 #Toca a música no jogo
-som_fundo = pygame.mixer.Sound('musica.mp3') #som de fundo
+som_fundo = pygame.mixer.Sound('util/som/musica.mp3') #som de fundo
 som_fundo.set_volume(0.2) #volume som da musica
 # som_fundo.play() #toca a musica sem loop
 som_fundo.play(loops = -1) #toca a musica com loop
 
 #Músicas do Pulo
-som_pulo = pygame.mixer.Sound('som_pulo.mp3') #som do pulo
+som_pulo = pygame.mixer.Sound('util/som/som_pulo.mp3') #som do pulo
 som_pulo.set_volume(0.4) #volume som do pulo
 
-som_explosao = pygame.mixer.Sound('bomba_som.mp3') #som da explosão
+som_explosao = pygame.mixer.Sound('util/som/bomba_som.mp3') #som da explosão
 som_explosao.set_volume(0.1) #volume som da explosão
 
-som_estrela = pygame.mixer.Sound('som_estrela.mp3') #som da estrela
+som_estrela = pygame.mixer.Sound('util/som/som_estrela.mp3') #som da estrela
 som_estrela.set_volume(0.1) #volume som da estrela 
 
 # ========== Inicia estruturas de dados ==========
