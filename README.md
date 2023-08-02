@@ -1,18 +1,34 @@
-O código é um jogo simples em que um ninja pula e coleta estrelas para ganhar pontos, enquanto evita bombas que podem reduzir sua vida. O jogo possui uma janela de 900x600 pixels e carrega imagens e sons para criar uma experiência interativa.
+# Jogo Ninja
 
-Recursos do jogo:
+## Descrição
 
-O jogo possui uma tela principal de 900x600 pixels.
-O personagem ninja pode se mover para a esquerda e para a direita usando as teclas de seta.
-O personagem pode pular pressionando a tecla de espaço.
-Estrelas e bombas aparecem aleatoriamente na tela e se movem de forma aleatória.
-O jogador ganha 10 pontos por coletar estrelas.
-O jogador perde 1 vida ao colidir com bombas.
-A pontuação é exibida na parte superior da tela, enquanto o número de vidas restantes é mostrado com o símbolo na tela.
-Melhorias possíveis:
+Jogo Ninja é um jogo simples de plataforma onde o jogador controla um ninja e deve desviar das bombas e coletar estrelas para ganhar pontos.
 
-Implementar animações para o pulo do personagem e a coleta de estrelas/bombas.
-Adicionar mais obstáculos e power-ups para tornar o jogo mais desafiador e divertido.
-Criar uma tela de menu e tela de fim de jogo com opções para reiniciar ou sair do jogo.
-Adicionar efeitos sonoros e música de fundo durante o jogo.
-Lembre-se que este é apenas um exemplo inicial de um jogo, e muitas outras mecânicas e recursos podem ser adicionados para torná-lo mais completo e interessante. A evolução do jogo depende da sua criatividade e do que você deseja implementar.
+## Funcionalidades
+
+- Controle do personagem ninja com as teclas esquerda e direita do teclado.
+- Pulando: o ninja pode pular para desviar das bombas.
+- Coleta de estrelas: o jogador ganha pontos ao coletar estrelas no jogo.
+- Vida do jogador: o jogador começa com 3 vidas e perde uma vida se colidir com uma bomba.
+- Aumento de vida: o jogador ganha uma vida extra a cada 50 pontos coletados.
+
+## Tecnologias Utilizadas
+
+- Python
+- Pygame (versão 2.1.2)
+
+## Como Jogar
+
+1. Clone este repositório para o seu computador.
+2. Certifique-se de ter o Python e o Pygame instalados em seu sistema.
+3. Execute o arquivo `main.py` para iniciar o jogo.
+4. Use as teclas esquerda e direita para mover o ninja e a tecla espaço para pular.
+5. Desvie das bombas e colete as estrelas para ganhar pontos.
+6. Acompanhe sua vida e pontuação na tela.
+7. O jogo termina quando o jogador fica sem vidas.
+
+## Autores
+
+- Lucas Santos (nome_do_usuario_github1)
+- João Andrade (joaoandrade633)
+- Lucca (Lucca15n)
