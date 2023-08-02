@@ -51,6 +51,10 @@ som_fundo.play(loops = -1) #toca a musica com loop
 som_pulo = pygame.mixer.Sound('som_pulo.mp3') #som do pulo
 som_pulo.set_volume(0.4) #volume som do pulo
 
+# Som de explosão
+som_explosao = pygame.mixer.Sound('bomba_som.mp3')
+som_explosao.set_volume(0.5)
+
 # ========== Inicia estruturas de dados ==========
 class Bomba(pygame.sprite.Sprite):
     def __init__(self, img):
@@ -110,13 +114,18 @@ class enviar (pygame.sprite.Sprite):
         if self.rect.left < 0:
             self.rect.left = 0
 
-    def pular(self):
-        if not self.pulando:
-            self.velocidade_y = -ALTURA_PULO
-            self.pulando = True
+    def pular(self): #função para pular
+        if not self.pulando: #se não estiver pulando
+            self.velocidade_y = -ALTURA_PULO #velocidade do pulo
+            self.pulando = True #está pulando
+
+def tocar_som_explosao(): #função para tocar o som de explosão
+
+    som_explosao.play() #toca o som de explosão
 
 def renderizar_vida(vida): #função para renderizar a vida
     return fonte.render("vida: " + chr(9829) * vida, True, (255, 255, 255))
+
 texto_vida = renderizar_vida(vida_jogador) #texto da vida
 texto_vida_rect = texto_vida.get_rect() #retangulo do texto da vida
 
@@ -193,10 +202,15 @@ while game:
 
     # Verifica se houve colisão entre a bomba e o jogador
     hits = pygame.sprite.spritecollide(jogador, todas_bombas, True)
+
     if len(hits) > 0:
+        tocar_som_explosao()  # Remova o argumento desnecessário aqui
         vida_jogador -= 1
-        if vida_jogador == 0:
-            game = False
+    if vida_jogador == 0:
+        tocar_som_explosao()
+        pygame.time.wait(1000)
+        game = False
+
 
     # Atualiza o texto da vida do jogador
     texto_vida = renderizar_vida(vida_jogador)
