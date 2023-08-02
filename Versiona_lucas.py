@@ -21,6 +21,9 @@ pygame.display.set_caption('Jogo ninja') #muda o nome da janela
 largura_ninja = 100
 altura_ninja = 90
 
+largura_estrela = 30
+altura_estrela = 30
+
 vida_jogador = 3
 pontos = 0
 
@@ -41,7 +44,7 @@ bomba_img = pygame.image.load('bomba.png').convert_alpha() # carrega imagem da b
 bomba_img_small = pygame.transform.scale(bomba_img, (LARGURA_BOMBA, ALTURA_BOMBA)) # diminui o tamanho da imagem da bomba
 
 estrela_img = pygame.image.load('estrela.png').convert_alpha() # carrega imagem da estrela
-estrela_img_small = pygame.transform.scale(estrela_img, (LARGURA_BOMBA, ALTURA_BOMBA)) # diminui o tamanho da imagem da estrela
+estrela_img_small = pygame.transform.scale(estrela_img, (largura_estrela, altura_estrela)) # diminui o tamanho da imagem da estrela
 
 #Toca a música no jogo
 som_fundo = pygame.mixer.Sound('musica.mp3') #som de fundo
@@ -56,6 +59,10 @@ som_pulo.set_volume(0.4) #volume som do pulo
 # Som de explosão
 som_explosao = pygame.mixer.Sound('bomba_som.mp3')
 som_explosao.set_volume(0.1)
+
+# Som de estrela
+som_estrela = pygame.mixer.Sound('som_estrela.mp3')
+som_estrela.set_volume(0.1)
 
 # ========== Inicia estruturas de dados ==========
 class Estrela(pygame.sprite.Sprite):
@@ -252,14 +259,16 @@ while game:
 
     if len(hits_estrela) > 0:
         pontos += 10
+        som_estrela.play()
         if pontos % 50 == 0:
             vida_jogador += 1 # Aumenta a vida do jogador a cada 50 pontos
 
     if len(hits_bomba) > 0:
-        tocar_som_explosao()  # Remova o argumento desnecessário aqui
+        som_explosao.play()
         vida_jogador -= 1
     if vida_jogador == 0:
-        tocar_som_explosao()
+        # tocar_som_explosao()
+        som_explosao.play()
         pygame.time.wait(1000)
         game = False
 
