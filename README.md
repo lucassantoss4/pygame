@@ -29,6 +29,6 @@ Jogo Ninja é um jogo simples de plataforma onde o jogador controla um ninja e d
 
 ## Autores
 
-- Lucas Santos (nome_do_usuario_github1)
-- João Andrade (joaoandrade633)
-- Lucca (Lucca15n)
+- Lucas Santos (@lucassantoss4)
+- João Andrade (@joaoandrade633)
+- Lucca (@Lucca15n)
