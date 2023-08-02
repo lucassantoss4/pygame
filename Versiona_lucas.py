@@ -1,12 +1,12 @@
 # ===== Inicialização =====
 # ----- Importa e inicia pacotes
 
-from typing import Any
-import pygame
-import random
-import time
+from typing import Any #importa o tipo Any
+import pygame #importa o pygame
+import random #importa o random
+import time #importa o time
 
-from pygame.sprite import AbstractGroup
+from pygame.sprite import AbstractGroup #importa o grupo de sprites
 
 pygame.init() # Inicia o pygame
 
@@ -14,7 +14,7 @@ pygame.init() # Inicia o pygame
 LARGURA = 900
 ALTURA = 600
 
-janela = pygame.display.set_mode((LARGURA, ALTURA))
+janela = pygame.display.set_mode((LARGURA, ALTURA)) # cria a janela
 pygame.display.set_caption('Jogo ninja') #muda o nome da janela
 
 # ----- Inicia assets
@@ -24,14 +24,14 @@ altura_ninja = 90
 largura_estrela = 30
 altura_estrela = 30
 
-vida_jogador = 3
+vida_jogador = 3  
 pontos = 0
 
-ALTURA_BOMBA = 70
-LARGURA_BOMBA = 50
+ALTURA_BOMBA = 70 #altura da bomba
+LARGURA_BOMBA = 50 #largura da bomba
 
-ALTURA_PULO = 15
-GRAvida_jogadorDE = 1
+ALTURA_PULO = 15 #altura do pulo do ninja
+GRAvida_jogadorDE = 1 #gravidade do ninja
 
 fonte = pygame.font.SysFont(None, 48)
 fundo = pygame.image.load('fundo2.jpg') # carrega imagem de fundo
@@ -56,17 +56,15 @@ som_fundo.play(loops = -1) #toca a musica com loop
 som_pulo = pygame.mixer.Sound('som_pulo.mp3') #som do pulo
 som_pulo.set_volume(0.4) #volume som do pulo
 
-# Som de explosão
-som_explosao = pygame.mixer.Sound('bomba_som.mp3')
-som_explosao.set_volume(0.1)
+som_explosao = pygame.mixer.Sound('bomba_som.mp3') #som da explosão
+som_explosao.set_volume(0.1) #volume som da explosão
 
-# Som de estrela
-som_estrela = pygame.mixer.Sound('som_estrela.mp3')
-som_estrela.set_volume(0.1)
+som_estrela = pygame.mixer.Sound('som_estrela.mp3') #som da estrela
+som_estrela.set_volume(0.1) #volume som da estrela 
 
 # ========== Inicia estruturas de dados ==========
-class Estrela(pygame.sprite.Sprite):
-    def __init__(self, img):
+class Estrela(pygame.sprite.Sprite): #classe estrela para criar as estrelas
+    def __init__(self, img): # Construtor da classe mãe (Sprite).
         # Construtor da classe mãe (Sprite).
         pygame.sprite.Sprite.__init__(self)
 
@@ -79,21 +77,20 @@ class Estrela(pygame.sprite.Sprite):
 
     def update(self):
         # Atualiza a posição da estrela
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
+        self.rect.x += self.speedx # velocidade x
+        self.rect.y += self.speedy  # velocidade y
 
-        # Se a estrela passar do final da tela, reinicie sua posição e velocidade
-        if self.rect.top > ALTURA or self.rect.left > LARGURA or self.rect.right < 0:
-            self.rect.x = random.randint(0, LARGURA - LARGURA_BOMBA)
-            self.rect.y = random.randint(-100, -ALTURA_BOMBA)
-            self.speedx = random.randint(-3, 3)
-            self.speedy = random.randint(1, 11)
+        if self.rect.top > ALTURA or self.rect.left > LARGURA or self.rect.right < 0: #se a estrela passar do final da tela
+            self.rect.x = random.randint(0, LARGURA - LARGURA_BOMBA) #posição x aleatoria
+            self.rect.y = random.randint(-100, -ALTURA_BOMBA) #posição y aleatoria
+            self.speedx = random.randint(-3, 3) #velocidade x aleatoria
+            self.speedy = random.randint(1, 11) #velocidade y aleatoria
 
 
-class Bomba(pygame.sprite.Sprite):
-    def __init__(self, img):
+class Bomba(pygame.sprite.Sprite): #classe bomba para criar as bombas
+    def __init__(self, img): #construtor da classe mãe (Sprite)
         # Construtor da classe mãe (Sprite).
-        pygame.sprite.Sprite.__init__(self)
+        pygame.sprite.Sprite.__init__(self) #inicia a classe mãe    
 
         self.image = img #imagem da bomba   
         self.rect = self.image.get_rect() #pega o retangulo da imagem
@@ -104,80 +101,77 @@ class Bomba(pygame.sprite.Sprite):
 
     def update(self):
         #atualiza a posição da bomba
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
-        # se a bomba passar do final da tela, volta para cima e sorteia novas posições e velocidades
-        if self.rect.top > ALTURA or self.rect.left > LARGURA or self.rect.right < 0:
-            self.rect.x = random.randint(0, LARGURA - LARGURA_BOMBA)
-            self.rect.y = random.randint(-100, -ALTURA_BOMBA)
-            self.speedx = random.randint(-3, 3)
-            self.speedy = random.randint(1, 11)
+        self.rect.x += self.speedx #velocidade x
+        self.rect.y += self.speedy #velocidade y
+
+        if self.rect.top > ALTURA or self.rect.left > LARGURA or self.rect.right < 0: #se a bomba passar do final da tela
+            self.rect.x = random.randint(0, LARGURA - LARGURA_BOMBA) #posição x aleatoria
+            self.rect.y = random.randint(-100, -ALTURA_BOMBA) #posição y aleatoria
+            self.speedx = random.randint(-3, 3) #velocidade x aleatoria
+            self.speedy = random.randint(1, 11) #velocidade y aleatoria
 
 
 class enviar (pygame.sprite.Sprite):
     def __init__(self,img):
         # Construtor da classe mãe (Sprite).
-        pygame.sprite.Sprite.__init__(self)
+        pygame.sprite.Sprite.__init__(self) #inicia a classe mãe
 
-        self.image = img 
-        self.rect = self.image.get_rect()
-        self.rect.centerx = LARGURA / 2
-        self.rect.bottom = ALTURA - 10 
-        self.speedx = 0
+        self.image = img  # imagem da bomba
+        self.rect = self.image.get_rect() # pega o retangulo da imagem
+        self.rect.centerx = LARGURA / 2 #posição x no centro
+        self.rect.bottom = ALTURA - 10 # posição y no final da tela
+        self.speedx = 0 #velocidade x
 
         # Variáveis de controle de salto
-        self.pulando = False
-        self.velocidade_y = 0
+        self.pulando = False #não está pulando
+        self.velocidade_y = 0 #velocidade do pulo
 
     def update(self):
         #Atualiza a posição 
-        self.rect.x += self.speedx
+        self.rect.x += self.speedx #atualiza a posição
 
         # Aplicar gravida_jogadorde
-        self.velocidade_y += GRAvida_jogadorDE
-        self.rect.y += self.velocidade_y
+        self.velocidade_y += GRAvida_jogadorDE #gravidade
+        self.rect.y += self.velocidade_y #atualiza a posição
 
         # Impedir que o personagem saia da tela no eixo vertical
-        if self.rect.bottom > ALTURA:
-            self.rect.bottom = ALTURA
-            self.pulando = False
+        if self.rect.bottom > ALTURA: #se a posição for maior que a altura
+            self.rect.bottom = ALTURA #mantem dentro da tela
+            self.pulando = False #não está pulando
 
         #Mantem dentro da tela
-        if self.rect.right > LARGURA:
-            self.rect.right = LARGURA
-        if self.rect.left < 0:
-            self.rect.left = 0
+        if self.rect.right > LARGURA: #se a posição for maior que a largura
+            self.rect.right = LARGURA #mantem dentro da tela
+        if self.rect.left < 0: #se a posição for menor que 0
+            self.rect.left = 0 #mantem dentro da tela
 
     def pular(self): #função para pular
         if not self.pulando: #se não estiver pulando
             self.velocidade_y = -ALTURA_PULO #velocidade do pulo
             self.pulando = True #está pulando
 
-def tocar_som_explosao(): #função para tocar o som de explosão
-    som_explosao.play() #toca o som de explosão
-
 def renderizar_vida(vida): #função para renderizar a vida
-    return fonte.render("vida: " + chr(9829) * vida, True, (255, 255, 255))
+    return fonte.render("vida: " + chr(9829) * vida, True, (255, 255, 255)) 
 
 def renderizar_pontuacao(pontos):
-    return fonte.render("Pontuação: " + str(pontos), True, (255, 255, 255))
+    return fonte.render("Pontuação: " + str(pontos), True, (255, 255, 255)) #função para renderizar a pontuação
 
 texto_vida = renderizar_vida(vida_jogador) #texto da vida
 texto_vida_rect = texto_vida.get_rect() #retangulo do texto da vida
 
 game = True  # Variável para o loop principal
 # Variável para o ajuste de velocidade
-clock = pygame.time.Clock()
+clock = pygame.time.Clock() #variável para o clock
 FPS = 60 
 
 # grupos de bombas e estrelas
-todas_sprites = pygame.sprite.Group()
-todas_bombas = pygame.sprite.Group()
-todas_estrelas = pygame.sprite.Group()
+todas_sprites = pygame.sprite.Group() #grupo de todas as sprites
+todas_bombas = pygame.sprite.Group() #grupo de todas as bombas
+todas_estrelas = pygame.sprite.Group() #grupo de todas as estrelas
 
 # criando personagem
-jogador = enviar(ninja_img_small)
-todas_sprites.add(jogador)
+jogador = enviar(ninja_img_small) #cria o personagem
+todas_sprites.add(jogador) #adiciona o personagem ao grupo de sprites
 
 
 # variável para o som do pulo
