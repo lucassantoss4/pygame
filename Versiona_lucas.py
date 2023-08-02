@@ -21,6 +21,7 @@ largura_ninja = 100
 altura_ninja = 90
 
 vida_jogador = 3
+pontos = 0
 
 ALTURA_BOMBA = 70
 LARGURA_BOMBA = 50
@@ -149,6 +150,9 @@ def tocar_som_explosao(): #função para tocar o som de explosão
 def renderizar_vida(vida): #função para renderizar a vida
     return fonte.render("vida: " + chr(9829) * vida, True, (255, 255, 255))
 
+def renderizar_pontuacao(pontos):
+    return fonte.render("Pontuação: " + str(pontos), True, (255, 255, 255))
+
 texto_vida = renderizar_vida(vida_jogador) #texto da vida
 texto_vida_rect = texto_vida.get_rect() #retangulo do texto da vida
 
@@ -233,6 +237,9 @@ while game:
     hits_estrela = pygame.sprite.spritecollide(jogador, todas_estrelas, True)
 
     # Verifica se houve colisão entre a bomba e o jogador
+    if len(hits_estrela) > 0:
+        pontos += 10
+        print(pontos)
 
     if len(hits_bomba) > 0:
         tocar_som_explosao()  # Remova o argumento desnecessário aqui
@@ -246,10 +253,14 @@ while game:
     # Atualiza o texto da vida do jogador
     texto_vida = renderizar_vida(vida_jogador)
 
+    # Atualiza o texto da pontuação
+    texto_pontuacao = renderizar_pontuacao(pontos)
+
     # ----- Gera saídas
     janela.fill((255, 255, 255))  # Preenche com a cor branca
     janela.blit(fundo, (0, 0)) # coloca a imagem de fundo na tela
     janela.blit(texto_vida, texto_vida_rect) #coloca o texto da vida na tela
+    janela.blit(texto_pontuacao, (620, 0)) # posicione o texto da pontuação na tela
 
 
     # Desenhando a bomba
