@@ -173,7 +173,7 @@ jogador = enviar(ninja_img_small)
 todas_sprites.add(jogador)
 
 # Adicionando bombas e estrelas ao grupo todas_sprites
-for i in range(5):
+for i in range(8):
     bomba = Bomba(bomba_img_small)
     todas_sprites.add(bomba)
     todas_bombas.add(bomba)
@@ -192,7 +192,7 @@ pulo_inicial = jogador.rect.bottom
 
 intervalo_estrela = 1  # Intervalo em segundos
 ultimo_spawn_estrela = time.time() # Tempo da última estrela
-max_estrelas = 3 # Máximo de estrelas na tela 
+max_estrelas = random.randint(0,5) # Máximo de estrelas na tela 
 
 # ===== Loop principal =====
 while game:
