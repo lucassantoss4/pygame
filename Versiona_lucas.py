@@ -41,6 +41,16 @@ bomba_img_small = pygame.transform.scale(bomba_img, (LARGURA_BOMBA, ALTURA_BOMBA
 estrela_img = pygame.image.load('estrela.png').convert_alpha() # carrega imagem da estrela
 estrela_img_small = pygame.transform.scale(estrela_img, (LARGURA_BOMBA, ALTURA_BOMBA)) # diminui o tamanho da imagem da estrela
 
+#Toca a música no jogo
+som_fundo = pygame.mixer.Sound('musica.mp3') #som de fundo
+som_fundo.set_volume(0.2) #volume som da musica
+# som_fundo.play() #toca a musica sem loop
+som_fundo.play(loops = -1) #toca a musica com loop
+
+#Músicas do Pulo
+som_pulo = pygame.mixer.Sound('som_pulo.mp3') #som do pulo
+som_pulo.set_volume(0.4) #volume som do pulo
+
 # ========== Inicia estruturas de dados ==========
 class Bomba(pygame.sprite.Sprite):
     def __init__(self, img):
@@ -135,6 +145,10 @@ bombas = pygame.sprite.Group()
 bomba1 = Bomba(bomba_img_small)
 bomba2 = Bomba(bomba_img_small)
 
+# variável para o som do pulo
+pulando = False
+pulo_inicial = jogador.rect.bottom
+
 # ===== Loop principal =====
 while game:
     clock.tick(FPS) # Ajusta a velocidade do jogo
@@ -160,8 +174,18 @@ while game:
             if evento.key == pygame.K_RIGHT:
                 jogador.speedx -= 5
 
-            if evento.key == pygame.K_SPACE:
-                jogador.pular()  # Chama a função de pular do jogador
+            if evento.key == pygame.K_SPACE and not pulando:
+                pulando = True
+                som_pulo.play() #toca a música quando pula
+                jogador.speedy = -15
+                jogador.pular() #Chama a função de pular do jogador
+
+        if pulando:
+            jogador.rect.y += jogador.speedy
+            jogador.speedy += 1
+            if jogador.rect.bottom >= pulo_inicial:
+                jogador.rect.bottom = pulo_inicial
+                pulando = False
 
     # ----- Atualiza estado do jogo
     # Atualizando a posição da bomba
