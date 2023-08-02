@@ -180,16 +180,9 @@ jogador = enviar(ninja_img_small)
 todas_sprites.add(jogador)
 
 
-# Criando um grupo de bombas
-bombas = pygame.sprite.Group()
-
-# Criando as bombas
-bomba1 = Bomba(bomba_img_small)
-bomba2 = Bomba(bomba_img_small)
-
 # variável para o som do pulo
 pulando = False
-pulo_inicial = jogador.rect.bottom
+pulo_inicial = jogador.rect.bottom # posição inicial do pulo
 
 intervalo_estrela = 1  # Intervalo em segundos
 ultimo_spawn_estrela = time.time() # Tempo da última estrela
@@ -205,24 +198,24 @@ while game:
 
     # ------- Trata eventos
     for evento in pygame.event.get():
-        if evento.type == pygame.QUIT:
+        if evento.type == pygame.QUIT: # Verifica se foi fechado
             game = False
             
         # Verifica se apertou alguma tecla.
         if evento.type == pygame.KEYDOWN:
             # Dependendo da tecla, altera a velocidade.
             if evento.key == pygame.K_LEFT:
-                jogador.speedx -= 5
+                jogador.speedx -= 5 #diminui a velocidade do jogador
             if evento.key == pygame.K_RIGHT:
-                jogador.speedx += 5
+                jogador.speedx += 5 #aumenta a velocidade do jogador
         
         # Verifica se soltou alguma tecla.
         if evento.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
             if evento.key == pygame.K_LEFT:
-                jogador.speedx += 5
+                jogador.speedx += 5 #aumenta a velocidade do jogador
             if evento.key == pygame.K_RIGHT:
-                jogador.speedx -= 5
+                jogador.speedx -= 5 #diminui a velocidade do jogador
 
             if evento.key == pygame.K_SPACE and not pulando:
                 pulando = True
@@ -230,29 +223,27 @@ while game:
                 jogador.speedy = -15
                 jogador.pular() #Chama a função de pular do jogador
 
-        if pulando:
-            jogador.rect.y += jogador.speedy
-            jogador.speedy += 1
-            if jogador.rect.bottom >= pulo_inicial:
-                jogador.rect.bottom = pulo_inicial
-                pulando = False
+        if pulando: #se estiver pulando
+            jogador.rect.y += jogador.speedy #atualiza a posição do jogador
+            jogador.speedy += 1 # aumenta a velocidade do pulo
+            if jogador.rect.bottom >= pulo_inicial: #se o jogador estiver no chão
+                jogador.rect.bottom = pulo_inicial #atualiza a posição do jogador
+                pulando = False #não está mais pulando
 
     # ----- Atualiza estado do jogo
     # Verifica se é hora de criar uma nova estrela
     agora = time.time()
     if agora - ultimo_spawn_estrela >= intervalo_estrela and len(todas_estrelas) < max_estrelas:
-        estrela = Estrela(estrela_img_small)
-        todas_sprites.add(estrela)
-        todas_estrelas.add(estrela)
-        ultimo_spawn_estrela = agora
+        estrela = Estrela(estrela_img_small) # Cria uma nova estrela
+        todas_sprites.add(estrela) # Adiciona a estrela no grupo de sprites
+        todas_estrelas.add(estrela) # Adiciona a estrela no grupo de estrelas
+        ultimo_spawn_estrela = agora # Atualiza o tempo da última estrela
 
-    # Verifica se é hora de criar uma nova bomba
-    # agora = time.time()
-    if agora - ultimo_spawn_bomba >= intervalo_bomba and len(todas_bombas) < max_bombas:
-        bomba = Bomba(bomba_img_small)
-        todas_sprites.add(bomba)
-        todas_bombas.add(bomba)
-        ultimo_spawn_bomba = agora
+    if agora - ultimo_spawn_bomba >= intervalo_bomba and len(todas_bombas) < max_bombas: # Verifica se é hora de criar uma nova bomba
+        bomba = Bomba(bomba_img_small) # Cria uma nova bomba
+        todas_sprites.add(bomba) # Adiciona a bomba no grupo de sprites
+        todas_bombas.add(bomba) # Adiciona a bomba no grupo de bombas
+        ultimo_spawn_bomba = agora # Atualiza o tempo da última bomba
 
     # Atualizando a posição da bomba
     todas_sprites.update()
