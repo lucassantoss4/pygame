@@ -4,6 +4,7 @@
 from typing import Any
 import pygame
 import random
+import time
 
 from pygame.sprite import AbstractGroup
 
@@ -54,7 +55,7 @@ som_pulo.set_volume(0.4) #volume som do pulo
 
 # Som de explosão
 som_explosao = pygame.mixer.Sound('bomba_som.mp3')
-som_explosao.set_volume(0.5)
+som_explosao.set_volume(0.1)
 
 # ========== Inicia estruturas de dados ==========
 class Estrela(pygame.sprite.Sprite):
@@ -70,10 +71,11 @@ class Estrela(pygame.sprite.Sprite):
         self.speedy = random.randint(1, 11) # velocidade y aleatória
 
     def update(self):
-        # atualiza a posição da estrela
+        # Atualiza a posição da estrela
         self.rect.x += self.speedx
         self.rect.y += self.speedy
-        # se a estrela passar do final da tela, volta para cima e sorteia novas posições e velocidades
+
+        # Se a estrela passar do final da tela, reinicie sua posição e velocidade
         if self.rect.top > ALTURA or self.rect.left > LARGURA or self.rect.right < 0:
             self.rect.x = random.randint(0, LARGURA - LARGURA_BOMBA)
             self.rect.y = random.randint(-100, -ALTURA_BOMBA)
@@ -173,11 +175,9 @@ todas_sprites.add(jogador)
 # Adicionando bombas e estrelas ao grupo todas_sprites
 for i in range(5):
     bomba = Bomba(bomba_img_small)
-    estrela = Estrela(estrela_img_small)
     todas_sprites.add(bomba)
-    todas_sprites.add(estrela)
     todas_bombas.add(bomba)
-    todas_estrelas.add(estrela)
+
 
 # Criando um grupo de bombas
 bombas = pygame.sprite.Group()
@@ -189,6 +189,10 @@ bomba2 = Bomba(bomba_img_small)
 # variável para o som do pulo
 pulando = False
 pulo_inicial = jogador.rect.bottom
+
+intervalo_estrela = 1  # Intervalo em segundos
+ultimo_spawn_estrela = time.time() # Tempo da última estrela
+max_estrelas = 3 # Máximo de estrelas na tela 
 
 # ===== Loop principal =====
 while game:
@@ -229,17 +233,27 @@ while game:
                 pulando = False
 
     # ----- Atualiza estado do jogo
+    # Verifica se é hora de criar uma nova estrela
+    agora = time.time()
+    if agora - ultimo_spawn_estrela >= intervalo_estrela and len(todas_estrelas) < max_estrelas:
+        estrela = Estrela(estrela_img_small)
+        todas_sprites.add(estrela)
+        todas_estrelas.add(estrela)
+        ultimo_spawn_estrela = agora
+
     # Atualizando a posição da bomba
     todas_sprites.update()
 
     # Verifica se houve colisão entre a bomba e o jogador
     hits_bomba = pygame.sprite.spritecollide(jogador, todas_bombas, True)
+
+    # Verifica se houve colisão entre o ninja e a estrela
     hits_estrela = pygame.sprite.spritecollide(jogador, todas_estrelas, True)
 
-    # Verifica se houve colisão entre a bomba e o jogador
     if len(hits_estrela) > 0:
         pontos += 10
-        print(pontos)
+        if pontos % 50 == 0:
+            vida_jogador += 1 # Aumenta a vida do jogador a cada 50 pontos
 
     if len(hits_bomba) > 0:
         tocar_som_explosao()  # Remova o argumento desnecessário aqui
@@ -248,7 +262,6 @@ while game:
         tocar_som_explosao()
         pygame.time.wait(1000)
         game = False
-
 
     # Atualiza o texto da vida do jogador
     texto_vida = renderizar_vida(vida_jogador)
