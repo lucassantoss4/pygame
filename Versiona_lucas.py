@@ -179,12 +179,6 @@ todas_estrelas = pygame.sprite.Group()
 jogador = enviar(ninja_img_small)
 todas_sprites.add(jogador)
 
-# Adicionando bombas e estrelas ao grupo todas_sprites
-for i in range(8):
-    bomba = Bomba(bomba_img_small)
-    todas_sprites.add(bomba)
-    todas_bombas.add(bomba)
-
 
 # Criando um grupo de bombas
 bombas = pygame.sprite.Group()
@@ -201,6 +195,10 @@ intervalo_estrela = 1  # Intervalo em segundos
 ultimo_spawn_estrela = time.time() # Tempo da última estrela
 max_estrelas = random.randint(0,5) # Número máximo de estrelas na tela
 
+
+intervalo_bomba = 1  # Intervalo em segundos para criar uma nova bomba
+ultimo_spawn_bomba = time.time()  # Tempo da última bomba
+max_bombas = random.randint(0,10)  # Número máximo de bombas na tela
 # ===== Loop principal =====
 while game:
     clock.tick(FPS) # Ajusta a velocidade do jogo
@@ -247,6 +245,14 @@ while game:
         todas_sprites.add(estrela)
         todas_estrelas.add(estrela)
         ultimo_spawn_estrela = agora
+
+    # Verifica se é hora de criar uma nova bomba
+    # agora = time.time()
+    if agora - ultimo_spawn_bomba >= intervalo_bomba and len(todas_bombas) < max_bombas:
+        bomba = Bomba(bomba_img_small)
+        todas_sprites.add(bomba)
+        todas_bombas.add(bomba)
+        ultimo_spawn_bomba = agora
 
     # Atualizando a posição da bomba
     todas_sprites.update()
