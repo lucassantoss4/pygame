@@ -83,14 +83,12 @@ def menu_principal():
                 pygame.quit()
                 quit()
             elif evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_SPACE or evento.key == pygame.K_w or evento.key == pygame.K_a or evento.key == pygame.K_d:
+                if evento.key == pygame.K_SPACE:
                     return  # Retorna da função e inicia o jogo
 
         janela.blit(menu_img, (0, 0))
         pygame.display.update()
         clock.tick(FPS)
-
-
 
 
 def inicializar_jogo():
@@ -107,11 +105,6 @@ def inicializar_jogo():
     pulando = False
     vida_jogador = 3
     pontos = 0
-
-
-
-
-
 
 
 # ========== Inicia estruturas de dados ==========
