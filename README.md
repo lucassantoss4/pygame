@@ -31,4 +31,4 @@ Jogo Ninja é um jogo simples de plataforma onde o jogador controla um ninja e d
 
 - Lucas Santos (@lucassantoss4)
 - João Andrade (@joaoandrade633)
-- Lucca (@Lucca15n)
+- Lucca Nicoletti (@Lucca15n)
