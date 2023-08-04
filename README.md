@@ -6,7 +6,7 @@ Jogo Ninja é um jogo simples de plataforma onde o jogador controla um ninja e d
 
 ## Funcionalidades
 
-- Controle do personagem ninja com as teclas esquerda e direita do teclado.
+- Controle do personagem ninja com as teclas ((a) para mover para a esquerda), ((d) para mover para a direita) e ((w) ou (espaço) para pular).
 - Pulando: o ninja pode pular para desviar das bombas.
 - Coleta de estrelas: o jogador ganha pontos ao coletar estrelas no jogo.
 - Vida do jogador: o jogador começa com 3 vidas e perde uma vida se colidir com uma bomba.
@@ -21,8 +21,8 @@ Jogo Ninja é um jogo simples de plataforma onde o jogador controla um ninja e d
 
 1. Clone este repositório para o seu computador.
 2. Certifique-se de ter o Python e o Pygame instalados em seu sistema.
-3. Execute o arquivo `main.py` para iniciar o jogo.
-4. Use as teclas esquerda e direita para mover o ninja e a tecla espaço para pular.
+3. Execute o arquivo `jogo_final.py` para iniciar o jogo.
+4. Use as teclas ((a) para mover para a esquerda), ((d) para mover para a direita) e ((w) ou (espaço) para pular).
 5. Desvie das bombas e colete as estrelas para ganhar pontos.
 6. Acompanhe sua vida e pontuação na tela.
 7. O jogo termina quando o jogador fica sem vidas.
