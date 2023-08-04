@@ -12,8 +12,8 @@ from pygame.sprite import AbstractGroup #importa o grupo de sprites
 pygame.init() # Inicia o pygame
 
 # ----- Gera tela principal
-LARGURA = 900
-ALTURA = 600
+LARGURA = 1000
+ALTURA = 700
 
 janela = pygame.display.set_mode((LARGURA, ALTURA)) # cria a janela
 pygame.display.set_caption('Jogo ninja') #muda o nome da janela
@@ -72,7 +72,7 @@ som_estrela.set_volume(0.1) #volume som da estrela
 
 ## Carregue a imagem do menu
 menu_img = pygame.image.load('util/img/tela_de_inicio.png').convert_alpha()
-menu_img = pygame.transform.scale(menu_img, (900, 600))
+menu_img = pygame.transform.scale(menu_img, (LARGURA, ALTURA))
 
 ## Função para exibir o menu e aguardar a tecla espaço ser pressionada
 def menu_principal():
@@ -303,7 +303,7 @@ while game:
     if len(hits_estrela) > 0:
         pontos += 10
         som_estrela.play()
-        if pontos % 50 == 0:
+        if pontos % 100 == 0:
             vida_jogador += 1 # Aumenta a vida do jogador a cada 50 pontos
 
     if len(hits_bomba) > 0:
