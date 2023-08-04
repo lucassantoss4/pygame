@@ -39,4 +39,4 @@ Jogo Ninja é um jogo simples de plataforma onde o jogador controla um ninja e d
 - Lucca Nicoletti (@Lucca15n)
 
 ## linck do youtube do jogo final:
-linck = https://youtu.be/HmhCACopPjY
+linck = https://youtu.be/fFCUahkRC3o
