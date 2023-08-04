@@ -27,6 +27,11 @@ Jogo Ninja é um jogo simples de plataforma onde o jogador controla um ninja e d
 6. Acompanhe sua vida e pontuação na tela.
 7. O jogo termina quando o jogador fica sem vidas.
 
+## Links:
+- musica de fundo: https://www.youtube.com/watch?v=yLo9k8Gifb0&ab_channel=DannyElfman-Topic
+- som do pulo: https://www.youtube.com/watch?v=FGAX1swcYA8&ab_channel=tecoteco
+- tela de inicio: Feita no canva (https://www.canva.com/design/DAFqgjwvQ_4/XdHlQKNt3M9T7kIgTXtESg/view?utm_content=DAFqgjwvQ_4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview)
+
 ## Autores
 
 - Lucas Santos (@lucassantoss4)
