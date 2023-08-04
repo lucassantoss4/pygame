@@ -70,11 +70,11 @@ som_estrela = pygame.mixer.Sound('util/som/som_estrela.mp3') #som da estrela
 som_estrela.set_volume(0.1) #volume som da estrela 
 
 
-#! Carregue a imagem do menu
+## Carregue a imagem do menu
 menu_img = pygame.image.load('util/img/tela_de_inicio.png').convert_alpha()
 menu_img = pygame.transform.scale(menu_img, (900, 600))
 
-#! Função para exibir o menu e aguardar a tecla espaço ser pressionada
+## Função para exibir o menu e aguardar a tecla espaço ser pressionada
 def menu_principal():
     global vida_jogador, pontos
     while True:
@@ -90,7 +90,7 @@ def menu_principal():
         pygame.display.update()
         clock.tick(FPS)
 
-
+#=====reiniciar o jogo=======
 def inicializar_jogo():
     global jogador, todas_sprites, todas_bombas, todas_estrelas
     global pulando, vida_jogador, pontos
