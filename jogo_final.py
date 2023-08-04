@@ -225,7 +225,7 @@ pulo_inicial = jogador.rect.bottom # posição inicial do pulo
 
 intervalo_estrela = 1  # Intervalo em segundos
 ultimo_spawn_estrela = time.time() # Tempo da última estrela
-max_estrelas = random.randint(0,5) # Número máximo de estrelas na tela
+max_estrelas = random.randint(2,10) # Número máximo de estrelas na tela
 
 
 intervalo_bomba = 1  # Intervalo em segundos para criar uma nova bomba
