@@ -4,6 +4,9 @@
 
 Jogo Ninja é um jogo simples de plataforma onde o jogador controla um ninja e deve desviar das bombas e coletar estrelas para ganhar pontos.
 
+## Video do jogo:
+- https://www.youtube.com/watch?v=HmhCACopPjY&ab_channel=LuccaNicoletti
+
 ## Funcionalidades
 
 - Controle do personagem ninja com as teclas ((a) para mover para a esquerda), ((d) para mover para a direita) e ((w) ou (espaço) para pular).
