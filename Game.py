@@ -6,13 +6,14 @@ import pygame #importa o pygame
 import random #importa o random
 import time #importa o time
 
+
 from pygame.sprite import AbstractGroup #importa o grupo de sprites
 
 pygame.init() # Inicia o pygame
 
 # ----- Gera tela principal
-LARGURA = 900
-ALTURA = 600
+LARGURA = 1000
+ALTURA = 700
 
 janela = pygame.display.set_mode((LARGURA, ALTURA)) # cria a janela
 pygame.display.set_caption('Jogo ninja') #muda o nome da janela
@@ -30,8 +31,14 @@ pontos = 0
 ALTURA_BOMBA = 70 #altura da bomba
 LARGURA_BOMBA = 50 #largura da bomba
 
+# Variáveis de velocidade do jogador
+VELOCIDADE_JOGADOR = 9.5
+
+# Variáveis para o pulo do jogador
 ALTURA_PULO = 15 #altura do pulo do ninja
+GRAVIDADE = 1.25 #gravidade do pulo do ninja
 GRAvida_jogadorDE = 1 #gravidade do ninja
+
 
 fonte = pygame.font.SysFont(None, 48)
 fundo = pygame.image.load('util/img/fundo2.jpg') # carrega imagem de fundo
@@ -61,6 +68,44 @@ som_explosao.set_volume(0.1) #volume som da explosão
 
 som_estrela = pygame.mixer.Sound('util/som/som_estrela.mp3') #som da estrela
 som_estrela.set_volume(0.1) #volume som da estrela 
+
+
+## Carregue a imagem do menu
+menu_img = pygame.image.load('util/img/tela_de_inicio.png').convert_alpha()
+menu_img = pygame.transform.scale(menu_img, (LARGURA, ALTURA))
+
+## Função para exibir o menu e aguardar a tecla espaço ser pressionada
+def menu_principal():
+    global vida_jogador, pontos # Variáveis globais para o jogo 
+    while True:
+        for evento in pygame.event.get(): # Verifica se o usuário quer sair
+            if evento.type == pygame.QUIT: # Se o usuário clicar no X da janela
+                pygame.quit()
+                quit()
+            elif evento.type == pygame.KEYDOWN: # Se o usuário apertar alguma tecla
+                if evento.key == pygame.K_SPACE: # Se a tecla for espaço
+                    return  # Retorna da função e inicia o jogo
+
+        janela.blit(menu_img, (0, 0)) # Desenha a imagem do menu na tela
+        pygame.display.update() # Atualiza a tela
+        clock.tick(FPS) # Controla a velocidade do jogo
+
+#=====reiniciar o jogo=======
+def inicializar_jogo():
+    global jogador, todas_sprites, todas_bombas, todas_estrelas # Variáveis globais para o jogo 
+    global pulando, vida_jogador, pontos # Variáveis globais para o jogo
+
+    jogador = enviar(ninja_img_small) # Cria o jogador com a imagem do ninja
+    todas_sprites = pygame.sprite.Group() # Cria um grupo de sprites para desenhar na tela
+    todas_bombas = pygame.sprite.Group() 
+    todas_estrelas = pygame.sprite.Group()
+
+    todas_sprites.add(jogador) # Adiciona o jogador no grupo de sprites
+
+    pulando = False
+    vida_jogador = 3
+    pontos = 0
+
 
 # ========== Inicia estruturas de dados ==========
 class Estrela(pygame.sprite.Sprite): #classe estrela para criar as estrelas
@@ -151,7 +196,7 @@ class enviar (pygame.sprite.Sprite):
             self.pulando = True #está pulando
 
 def renderizar_vida(vida): #função para renderizar a vida
-    return fonte.render("vida: " + chr(9829) * vida, True, (255, 255, 255)) 
+    return fonte.render("Vida: " + chr(9829) * vida, True, (255, 255, 255)) 
 
 def renderizar_pontuacao(pontos):
     return fonte.render("Pontuação: " + str(pontos), True, (255, 255, 255)) #função para renderizar a pontuação
@@ -180,14 +225,19 @@ pulo_inicial = jogador.rect.bottom # posição inicial do pulo
 
 intervalo_estrela = 1  # Intervalo em segundos
 ultimo_spawn_estrela = time.time() # Tempo da última estrela
-max_estrelas = random.randint(0,5) # Número máximo de estrelas na tela
+max_estrelas = random.randint(2,10) # Número máximo de estrelas na tela
 
 
 intervalo_bomba = 1  # Intervalo em segundos para criar uma nova bomba
 ultimo_spawn_bomba = time.time()  # Tempo da última bomba
-max_bombas = random.randint(0,10)  # Número máximo de bombas na tela
+max_bombas = random.randint(4,16)  # Número máximo de bombas na tela
+
+# Chama a função para exibir o menu antes do loop principal do jogo
+menu_principal()
+
 # ===== Loop principal =====
 while game:
+
     clock.tick(FPS) # Ajusta a velocidade do jogo
 
     # ------- Trata eventos
@@ -198,31 +248,33 @@ while game:
         # Verifica se apertou alguma tecla.
         if evento.type == pygame.KEYDOWN:
             # Dependendo da tecla, altera a velocidade.
-            if evento.key == pygame.K_LEFT:
-                jogador.speedx -= 5 #diminui a velocidade do jogador
-            if evento.key == pygame.K_RIGHT:
-                jogador.speedx += 5 #aumenta a velocidade do jogador
+            if evento.key == pygame.K_a:
+                jogador.speedx -= VELOCIDADE_JOGADOR #diminui a velocidade do jogador
+            if evento.key == pygame.K_d:
+                jogador.speedx += VELOCIDADE_JOGADOR #aumenta a velocidade do jogador
         
         # Verifica se soltou alguma tecla.
         if evento.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
-            if evento.key == pygame.K_LEFT:
-                jogador.speedx += 5 #aumenta a velocidade do jogador
-            if evento.key == pygame.K_RIGHT:
-                jogador.speedx -= 5 #diminui a velocidade do jogador
+            if evento.key == pygame.K_a:
+                jogador.speedx += VELOCIDADE_JOGADOR #aumenta a velocidade do jogador
+            if evento.key == pygame.K_d:
+                jogador.speedx -= VELOCIDADE_JOGADOR #diminui a velocidade do jogador
 
-            if evento.key == pygame.K_SPACE and not pulando:
+        # Verifica se apertou a tecla espaço.
+        if evento.type == pygame.KEYDOWN:
+            if (evento.key == pygame.K_SPACE and not pulando) or (evento.key == pygame.K_w and not pulando):
                 pulando = True
-                som_pulo.play() #toca a música quando pula
-                jogador.speedy = -15
-                jogador.pular() #Chama a função de pular do jogador
+                som_pulo.play()  # toca o som quando pula
+                jogador.speedy = -ALTURA_PULO
+                jogador.pular()  # Chama a função de pular do jogador
 
-        if pulando: #se estiver pulando
-            jogador.rect.y += jogador.speedy #atualiza a posição do jogador
-            jogador.speedy += 1 # aumenta a velocidade do pulo
-            if jogador.rect.bottom >= pulo_inicial: #se o jogador estiver no chão
-                jogador.rect.bottom = pulo_inicial #atualiza a posição do jogador
-                pulando = False #não está mais pulando
+    if pulando: #se estiver pulando
+        jogador.rect.y += jogador.speedy #atualiza a posição do jogador
+        jogador.speedy += GRAVIDADE # aumenta a velocidade do pulo
+        if jogador.rect.bottom >= pulo_inicial:  #se o jogador estiver no chão
+            jogador.rect.bottom = pulo_inicial #atualiza a posição do jogador
+            pulando = False #não está mais pulando
 
     # ----- Atualiza estado do jogo
     # Verifica se é hora de criar uma nova estrela
@@ -251,17 +303,18 @@ while game:
     if len(hits_estrela) > 0:
         pontos += 10
         som_estrela.play()
-        if pontos % 50 == 0:
+        if pontos % 100 == 0:
             vida_jogador += 1 # Aumenta a vida do jogador a cada 50 pontos
 
     if len(hits_bomba) > 0:
         som_explosao.play()
         vida_jogador -= 1
+
     if vida_jogador == 0:
-        # tocar_som_explosao()
         som_explosao.play()
         pygame.time.wait(1000)
-        game = False
+        inicializar_jogo()  # Reinicia o jogo
+        menu_principal()
 
     # Atualiza o texto da vida do jogador
     texto_vida = renderizar_vida(vida_jogador)
@@ -272,8 +325,8 @@ while game:
     # ----- Gera saídas
     janela.fill((255, 255, 255))  # Preenche com a cor branca
     janela.blit(fundo, (0, 0)) # coloca a imagem de fundo na tela
-    janela.blit(texto_vida, texto_vida_rect) #coloca o texto da vida na tela
-    janela.blit(texto_pontuacao, (620, 0)) # posicione o texto da pontuação na tela
+    janela.blit(texto_vida, (30, 10)) #coloca o texto da vida na tela
+    janela.blit(texto_pontuacao, (630, 10)) # posicione o texto da pontuação na tela
 
 
     # Desenhando a bomba
