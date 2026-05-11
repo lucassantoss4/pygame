@@ -7,11 +7,10 @@ env/
 venv/
 ENV/
 
-# Pygame/Assets (Ignora arquivos soltos na raiz, mas mantém a pasta util)
-*.jpg
-*.png
-*.mp3
-!util/
+# Pygame/Assets
+# Não ignorar nada que esteja dentro da pasta de recursos do jogo
+!src/util/
+!src/util/**
 
 # IDEs
 .vscode/
