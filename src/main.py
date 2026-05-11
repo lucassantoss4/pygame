@@ -2,13 +2,17 @@ import pygame
 import random
 import time
 import os
+import asyncio
 
 from src.config import *
 from src.sprites import Jogador, Estrela, Bomba, Particula
 
 # Inicialização do Pygame
 pygame.init()
-pygame.mixer.init()
+try:
+    pygame.mixer.init()
+except:
+    pass # Alguns navegadores podem bloquear áudio inicialmente
 
 # Cria a Janela
 janela = pygame.display.set_mode((LARGURA, ALTURA))
@@ -68,7 +72,7 @@ def renderizar_vida(vida):
 def renderizar_pontuacao(pontos):
     return fonte.render(f"Pontuação: {pontos}", True, BRANCO)
 
-def menu_principal():
+async def menu_principal():
     while True:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -81,9 +85,13 @@ def menu_principal():
         janela.blit(menu_img, (0, 0))
         pygame.display.update()
         clock.tick(FPS)
+        await asyncio.sleep(0) # Permite que o navegador respire
 
-def jogo():
-    som_fundo.play(loops=-1)
+async def jogo():
+    try:
+        som_fundo.play(loops=-1)
+    except:
+        pass
     
     # Grupos de Sprites
     todas_sprites = pygame.sprite.Group()
@@ -197,11 +205,12 @@ def jogo():
             janela.blit(sprite.image, (sprite.rect.x + render_offset[0], sprite.rect.y + render_offset[1]))
             
         pygame.display.update()
+        await asyncio.sleep(0) # Essencial para rodar no navegador
 
-def main():
+async def main():
     while True:
-        menu_principal()
-        jogo()
+        await menu_principal()
+        await jogo()
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
