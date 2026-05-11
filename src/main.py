@@ -119,19 +119,20 @@ async def jogo():
                         except: pass
                         jogador.pular()
 
-        if agora - ultimo_spawn_estrela >= intervalo_estrela and len(todas_estrelas) < max_stars_on_screen():
-            # Função para limitar itens na tela baseada na dificuldade
-            def max_stars_on_screen(): return random.randint(2, 5)
+        # Lógica de Spawn de Itens (com dificuldade)
+        if agora - ultimo_spawn_estrela >= intervalo_estrela and len(todas_estrelas) < max_estrelas:
             estrela = Estrela(estrela_img_small, bonus_velocidade=dificuldade)
             todas_sprites.add(estrela)
             todas_estrelas.add(estrela)
             ultimo_spawn_estrela = agora
+            max_estrelas = random.randint(2, 5)
 
-        if agora - ultimo_spawn_bomba >= intervalo_bomba and len(todas_bombas) < 10:
+        if agora - ultimo_spawn_bomba >= intervalo_bomba and len(todas_bombas) < max_bombas:
             bomba = Bomba(bomba_img_small, bonus_velocidade=dificuldade)
             todas_sprites.add(bomba)
             todas_bombas.add(bomba)
             ultimo_spawn_bomba = agora
+            max_bombas = random.randint(4, 10)
 
         todas_sprites.update()
         hits_bomba = pygame.sprite.spritecollide(jogador, todas_bombas, True, pygame.sprite.collide_mask)
