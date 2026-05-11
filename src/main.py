@@ -4,8 +4,8 @@ import time
 import os
 import asyncio
 
-from src.config import *
-from src.sprites import Jogador, Estrela, Bomba, Particula
+from config import *
+from sprites import Jogador, Estrela, Bomba, Particula
 
 # Inicialização do Pygame
 pygame.init()

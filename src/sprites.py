@@ -1,6 +1,6 @@
 import pygame
 import random
-from .config import *
+from config import *
 
 class Particula(pygame.sprite.Sprite):
     def __init__(self, x, y, cor):
