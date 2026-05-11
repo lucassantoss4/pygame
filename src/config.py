@@ -1,0 +1,23 @@
+import pygame
+
+# Configurações da Janela
+LARGURA = 1000
+ALTURA = 700
+FPS = 60
+
+# Tamanho dos Assets
+LARGURA_NINJA = 100
+ALTURA_NINJA = 90
+LARGURA_ESTRELA = 30
+ALTURA_ESTRELA = 30
+ALTURA_BOMBA = 70
+LARGURA_BOMBA = 50
+
+# Física e Movimentação
+VELOCIDADE_JOGADOR = 9.5
+ALTURA_PULO = 15
+GRAVIDADE = 1
+
+# Cores
+BRANCO = (255, 255, 255)
+PRETO = (0, 0, 0)

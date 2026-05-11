@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+
+# Pygame/Assets (Ignora arquivos soltos na raiz, mas mantém a pasta util)
+*.jpg
+*.png
+*.mp3
+!util/
+
+# IDEs
+.vscode/
+.idea/
+
+# Agent folder
+.agent/
+refatoracao-ninja.md
+lixeira/
