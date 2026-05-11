@@ -161,7 +161,7 @@ async def jogo():
         if vida_jogador <= 0:
             try: som_fundo.stop()
             except: pass
-            pygame.time.wait(1000)
+            await asyncio.sleep(1) # async sleep no lugar de wait
             return
 
         janela.blit(fundo, (render_offset[0], render_offset[1]))

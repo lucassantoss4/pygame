@@ -69,36 +69,47 @@ class Jogador(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = LARGURA / 2
         self.rect.bottom = ALTURA - 10
-        self.pos = pygame.Vector2(self.rect.centerx, self.rect.bottom)
-        self.vel = pygame.Vector2(0, 0)
-        self.acc = pygame.Vector2(0, 0)
+        
+        # Variáveis físicas simples (evitando Vector2 na Web)
+        self.pos_x = float(self.rect.centerx)
+        self.pos_y = float(self.rect.bottom)
+        self.vel_x = 0.0
+        self.vel_y = 0.0
         self.pulando = False
 
     def update(self):
-        self.acc = pygame.Vector2(0, GRAVIDADE)
+        acc_x = 0.0
+        acc_y = GRAVIDADE
+        
         keys = pygame.key.get_pressed()
         
         # Detecção de movimento (A/D ou Setas)
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.acc.x = -ACELERACAO * 1.5 # Leve aumento para compensar lag do browser
+            acc_x = -ACELERACAO * 1.5
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.acc.x = ACELERACAO * 1.5
+            acc_x = ACELERACAO * 1.5
         
         # Aplica atrito e física
-        self.acc.x += self.vel.x * ATRITO
-        self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
+        acc_x += self.vel_x * ATRITO
         
-        if self.pos.x > LARGURA: self.pos.x = LARGURA
-        if self.pos.x < 0: self.pos.x = 0
-        if self.pos.y > ALTURA:
-            self.pos.y = ALTURA
-            self.vel.y = 0
+        self.vel_x += acc_x
+        self.vel_y += acc_y
+        
+        self.pos_x += self.vel_x + 0.5 * acc_x
+        self.pos_y += self.vel_y + 0.5 * acc_y
+        
+        # Limites da tela
+        if self.pos_x > LARGURA: self.pos_x = LARGURA
+        if self.pos_x < 0: self.pos_x = 0
+        if self.pos_y > ALTURA:
+            self.pos_y = ALTURA
+            self.vel_y = 0.0
             self.pulando = False
-        self.rect.centerx = self.pos.x
-        self.rect.bottom = self.pos.y
+            
+        self.rect.centerx = int(self.pos_x)
+        self.rect.bottom = int(self.pos_y)
 
     def pular(self):
         if not self.pulando:
-            self.vel.y = -ALTURA_PULO
+            self.vel_y = -ALTURA_PULO
             self.pulando = True
