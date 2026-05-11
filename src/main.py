@@ -4,7 +4,7 @@ import time
 import os
 
 from src.config import *
-from src.sprites import Jogador, Estrela, Bomba
+from src.sprites import Jogador, Estrela, Bomba, Particula
 
 # Inicialização do Pygame
 pygame.init()
@@ -95,6 +95,7 @@ def jogo():
 
     vida_jogador = 3
     pontos = 0
+    dificuldade = 0 # Adicional de velocidade
 
     intervalo_estrela = 1
     ultimo_spawn_estrela = time.time()
@@ -104,10 +105,18 @@ def jogo():
     ultimo_spawn_bomba = time.time()
     max_bombas = random.randint(4, 10)
 
+    shake_timer = 0
     rodando = True
     while rodando:
         clock.tick(FPS)
         agora = time.time()
+        
+        # Gerencia Screen Shake
+        render_offset = [0, 0]
+        if shake_timer > 0:
+            shake_timer -= 1
+            render_offset = [random.randint(-SCREEN_SHAKE_INTENSITY, SCREEN_SHAKE_INTENSITY), 
+                             random.randint(-SCREEN_SHAKE_INTENSITY, SCREEN_SHAKE_INTENSITY)]
 
         # Tratamento de Eventos
         for evento in pygame.event.get():
@@ -117,31 +126,21 @@ def jogo():
                 exit()
                 
             if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_LEFT or evento.key == pygame.K_a:
-                    jogador.speedx -= VELOCIDADE_JOGADOR
-                if evento.key == pygame.K_RIGHT or evento.key == pygame.K_d:
-                    jogador.speedx += VELOCIDADE_JOGADOR
                 if evento.key in [pygame.K_SPACE, pygame.K_w, pygame.K_UP]:
                     if not jogador.pulando:
                         som_pulo.play()
                         jogador.pular()
-            
-            if evento.type == pygame.KEYUP:
-                if evento.key == pygame.K_LEFT or evento.key == pygame.K_a:
-                    jogador.speedx += VELOCIDADE_JOGADOR
-                if evento.key == pygame.K_RIGHT or evento.key == pygame.K_d:
-                    jogador.speedx -= VELOCIDADE_JOGADOR
 
-        # Lógica de Spawn de Itens
+        # Lógica de Spawn de Itens (com dificuldade)
         if agora - ultimo_spawn_estrela >= intervalo_estrela and len(todas_estrelas) < max_estrelas:
-            estrela = Estrela(estrela_img_small)
+            estrela = Estrela(estrela_img_small, bonus_velocidade=dificuldade)
             todas_sprites.add(estrela)
             todas_estrelas.add(estrela)
             ultimo_spawn_estrela = agora
             max_estrelas = random.randint(2, 5)
 
         if agora - ultimo_spawn_bomba >= intervalo_bomba and len(todas_bombas) < max_bombas:
-            bomba = Bomba(bomba_img_small)
+            bomba = Bomba(bomba_img_small, bonus_velocidade=dificuldade)
             todas_sprites.add(bomba)
             todas_bombas.add(bomba)
             ultimo_spawn_bomba = agora
@@ -150,19 +149,33 @@ def jogo():
         # Atualização dos Sprites
         todas_sprites.update()
 
-        # Colisões
-        hits_bomba = pygame.sprite.spritecollide(jogador, todas_bombas, True)
-        hits_estrela = pygame.sprite.spritecollide(jogador, todas_estrelas, True)
+        # Colisões (com Máscara para precisão)
+        hits_bomba = pygame.sprite.spritecollide(jogador, todas_bombas, True, pygame.sprite.collide_mask)
+        hits_estrela = pygame.sprite.spritecollide(jogador, todas_estrelas, True, pygame.sprite.collide_mask)
 
         if hits_estrela:
             som_estrela.play()
-            pontos += 10 * len(hits_estrela)
-            if pontos > 0 and pontos % 100 == 0:
-                vida_jogador = min(vida_jogador + 1, 5) # Cap em 5 de vida max
+            for h in hits_estrela:
+                pontos += 10
+                # Criar partículas amarelas
+                for _ in range(10):
+                    p = Particula(h.rect.centerx, h.rect.centery, (255, 215, 0))
+                    todas_sprites.add(p)
+            
+            # Aumentar dificuldade a cada 100 pontos
+            dificuldade = pontos // 100
+            if pontos % 100 == 0:
+                vida_jogador = min(vida_jogador + 1, 5)
 
         if hits_bomba:
             som_explosao.play()
+            shake_timer = 15 # Ativa Screen Shake
             vida_jogador -= len(hits_bomba)
+            for h in hits_bomba:
+                # Criar partículas vermelhas/laranja
+                for _ in range(15):
+                    p = Particula(h.rect.centerx, h.rect.centery, (255, 69, 0))
+                    todas_sprites.add(p)
 
         if vida_jogador <= 0:
             som_fundo.stop()
@@ -171,15 +184,18 @@ def jogo():
             return # Retorna para o menu principal
 
         # Renderização
-        janela.blit(fundo, (0, 0))
+        janela.blit(fundo, (render_offset[0], render_offset[1]))
         
         texto_vida = renderizar_vida(vida_jogador)
         texto_pontuacao = renderizar_pontuacao(pontos)
         
-        janela.blit(texto_vida, (30, 10))
-        janela.blit(texto_pontuacao, (LARGURA - 300, 10))
+        janela.blit(texto_vida, (30 + render_offset[0], 10 + render_offset[1]))
+        janela.blit(texto_pontuacao, (LARGURA - 300 + render_offset[0], 10 + render_offset[1]))
 
-        todas_sprites.draw(janela)
+        # Desenhar sprites com offset
+        for sprite in todas_sprites:
+            janela.blit(sprite.image, (sprite.rect.x + render_offset[0], sprite.rect.y + render_offset[1]))
+            
         pygame.display.update()
 
 def main():
