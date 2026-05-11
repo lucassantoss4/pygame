@@ -26,10 +26,10 @@ jobs:
 
       - name: Build Web Version
         run: |
-          python -m pygbag --build src/main.py
+          python -m pygbag --disable-sound-format-error --build src/main.py
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: src/build/web # Onde o pygbag gera os arquivos
+          folder: src/build/web
           branch: gh-pages # A branch onde o site será hospedado

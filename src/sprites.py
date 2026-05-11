@@ -14,7 +14,7 @@ class Particula(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += self.vel[0]
         self.rect.y += self.vel[1]
-        self.vel[1] += 0.5 # Gravidade da partícula
+        self.vel[1] += 0.5 
         self.lifetime -= 1
         if self.lifetime <= 0:
             self.kill()
@@ -37,7 +37,6 @@ class Estrela(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
-
         if self.rect.top > ALTURA or self.rect.left > LARGURA or self.rect.right < 0:
             self.spawn_aleatorio()
 
@@ -59,7 +58,6 @@ class Bomba(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
-
         if self.rect.top > ALTURA or self.rect.left > LARGURA or self.rect.right < 0:
             self.spawn_aleatorio()
 
@@ -71,39 +69,29 @@ class Jogador(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = LARGURA / 2
         self.rect.bottom = ALTURA - 10
-        
         self.pos = pygame.Vector2(self.rect.centerx, self.rect.bottom)
         self.vel = pygame.Vector2(0, 0)
         self.acc = pygame.Vector2(0, 0)
-        
         self.pulando = False
 
     def update(self):
         self.acc = pygame.Vector2(0, GRAVIDADE)
-        
-        # Entrada do teclado
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.acc.x = -ACELERACAO
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.acc.x = ACELERACAO
         
-        # Aplicar atrito
         self.acc.x += self.vel.x * ATRITO
-        
-        # Equações de movimento
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         
-        # Limites da tela
         if self.pos.x > LARGURA: self.pos.x = LARGURA
         if self.pos.x < 0: self.pos.x = 0
-        
         if self.pos.y > ALTURA:
             self.pos.y = ALTURA
             self.vel.y = 0
             self.pulando = False
-
         self.rect.centerx = self.pos.x
         self.rect.bottom = self.pos.y
 
