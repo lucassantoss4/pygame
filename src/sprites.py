@@ -77,11 +77,14 @@ class Jogador(pygame.sprite.Sprite):
     def update(self):
         self.acc = pygame.Vector2(0, GRAVIDADE)
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.acc.x = -ACELERACAO
-        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.acc.x = ACELERACAO
         
+        # Detecção de movimento (A/D ou Setas)
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            self.acc.x = -ACELERACAO * 1.5 # Leve aumento para compensar lag do browser
+        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            self.acc.x = ACELERACAO * 1.5
+        
+        # Aplica atrito e física
         self.acc.x += self.vel.x * ATRITO
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
