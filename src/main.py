@@ -42,13 +42,13 @@ except Exception as e:
     print(f"Erro ao carregar imagens: {e}")
 
 try:
-    som_fundo = pygame.mixer.Sound(get_path('util/som/musica.mp3'))
+    som_fundo = pygame.mixer.Sound(get_path('util/som/musica.ogg'))
     som_fundo.set_volume(0.2)
-    som_pulo = pygame.mixer.Sound(get_path('util/som/som_pulo.mp3'))
+    som_pulo = pygame.mixer.Sound(get_path('util/som/som_pulo.ogg'))
     som_pulo.set_volume(0.4)
-    som_explosao = pygame.mixer.Sound(get_path('util/som/bomba_som.mp3'))
+    som_explosao = pygame.mixer.Sound(get_path('util/som/bomba_som.ogg'))
     som_explosao.set_volume(0.1)
-    som_estrela = pygame.mixer.Sound(get_path('util/som/som_estrela.mp3'))
+    som_estrela = pygame.mixer.Sound(get_path('util/som/som_estrela.ogg'))
     som_estrela.set_volume(0.1)
 except Exception as e:
     print(f"Erro ao carregar sons: {e}")
